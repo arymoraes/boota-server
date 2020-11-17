@@ -1,11 +1,10 @@
 import { UserModel } from "../models/users";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
-import { MG_API_KEY, MG_DATA, MG_DOMAIN, SECRET_KEY } from "../environment";
 import mailgun from "mailgun-js";
 
-const DOMAIN = MG_DOMAIN;
-const mg = mailgun({ apiKey: MG_API_KEY, domain: DOMAIN });
+const DOMAIN = process.env.MG_DOMAIN;
+// const mg = mailgun({ apiKey: process.env.MG_API_KEY, domain: DOMAIN });
 
 export const registerUser = async (req: any, res: any) => {
   try {
@@ -68,7 +67,7 @@ export const userLogIn = async (req: any, res: any) => {
         username: fetchedUser.username,
         name: fetchedUser.name,
       },
-      token: jwt.sign({ _id: fetchedUser._id }, SECRET_KEY, {
+      token: jwt.sign({ _id: fetchedUser._id }, process.env.SECRET_KEY, {
         expiresIn: 86400,
       }),
     });
@@ -88,11 +87,14 @@ export const forgotPassword = async (req: any, res: any): Promise<void> => {
   try {
     // finds the user in the database, generates a temporary token
     const user: any = await UserModel.find({ username });
-    const token = jwt.sign({ _id: user._id }, SECRET_KEY, { expiresIn: "30m" });
+    const token = jwt.sign({ _id: user._id }, process.env.SECRET_KEY, { expiresIn: "30m" });
 
     // this is what will be sent on the email
     const data = {
-      ...MG_DATA,
+      from:
+        "Mailgun Sandbox <postmaster@sandbox61a63344e46943278845e421870227ce.mailgun.org>",
+      subject: "Password Reset",
+      text: "Testing some Mailgun awesomness!",
       to: username,
       html: `http://localhost:5000/resetpassword/${token}`,
     };
@@ -104,12 +106,12 @@ export const forgotPassword = async (req: any, res: any): Promise<void> => {
     await UserModel.findOneAndUpdate(filter, update);
 
     // Sends the email to the person with a link to reset password
-    mg.messages().send(data, (err, _) => {
-      if (err) {
-        return res.json({ error: err.message });
-      }
-      return res.sendStatus(200);
-    });
+    // mg.messages().send(data, (err, _) => {
+    //   if (err) {
+    //     return res.json({ error: err.message });
+    //   }
+    //   return res.sendStatus(200);
+    // });
   } catch (err) {
     res.sendStatus(401);
   }

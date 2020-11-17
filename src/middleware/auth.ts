@@ -1,5 +1,4 @@
 import jwt from 'jsonwebtoken';
-import { SECRET_KEY } from '../environment';
 import { Request, Response } from 'express';
 import { UserModel } from '../models/users';
 import { Document } from 'mongoose'
@@ -16,7 +15,7 @@ const authMiddleware = async (req: AuthRequest, res: Response, next: any) => {
   const [, token] = authHeader.split(' ');
 
   try {
-    const jwtCheck: any = jwt.verify(token, SECRET_KEY); // change this any type later!
+    const jwtCheck: any = jwt.verify(token, process.env.SECRET_KEY); // change this any type later!
     const user = await UserModel.findOne({_id: jwtCheck._id});
     // If user does not exist in the database
     if (!user) return res.sendStatus(401);

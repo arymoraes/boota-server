@@ -3,12 +3,15 @@ import cors from 'cors';
 import { mongooseConnection } from './database'
 import router from './router'
 import bodyParser from 'body-parser'
-import { FRONTEND_URL, PORT, SERVER_URL } from './environment'
+import { resolve } from 'path';
+import dotenv from 'dotenv';
+
+dotenv.config({ path: resolve(__dirname, "./.env") });
 
 const app = express();
 
 const corsConfig = {
-  origin: FRONTEND_URL,
+  origin: process.env.FRONTEND_URL,
   credentials: true
 }
 
@@ -16,9 +19,9 @@ app.use(bodyParser.json())
 app.use(cors(corsConfig))
 app.use(router)
 
-const server = app.listen(PORT, (): void => {
+const server = app.listen(process.env.PORT, (): void => {
   mongooseConnection();
-  console.log(`Server running on ${SERVER_URL}`)
+  console.log(`Server running on ${process.env.SERVER_URL}`)
 });
 
 module.exports = server;
