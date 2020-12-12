@@ -60,4 +60,5 @@ For the server:
 
 ## Links ##
 
-Client repository: ...
+Client repository: [...](https://github.com/Fallenefc/boota-client)
+Deployed app: [...](https://reverent-knuth-ec436c.netlify.app/)
