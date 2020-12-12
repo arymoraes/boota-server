@@ -13,7 +13,7 @@ const userSchema: mongoose.Schema<UserInterface> = new mongoose.Schema({
   username: String,
   password: String,
   name: String,
-  resetPasswordLink: String
-})
+  resetPasswordLink: String,
+});
 
 export const UserModel = mongoose.model('User', userSchema);

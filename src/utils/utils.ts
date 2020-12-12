@@ -1,7 +1,6 @@
 import Questions from '../models/question';
 
 export const examScoreCalculator = async (studentAnswers: any, questionsIdsArray: any) => {
-
   let correct = 0;
   let total = 0;
 
@@ -9,9 +8,9 @@ export const examScoreCalculator = async (studentAnswers: any, questionsIdsArray
 
   fetchedQuestions.forEach((question: any) => {
     if (studentAnswers[question.uuid] === question.correct) correct++;
-    total++
-  })
+    total++;
+  });
 
   const result = Math.round((correct / total) * 100);
   return result;
-}
+};

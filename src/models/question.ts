@@ -1,4 +1,4 @@
-import mongoose, { Schema } from 'mongoose';
+import mongoose from 'mongoose';
 
 export interface QuestionRaw {
   title: string,
@@ -6,8 +6,7 @@ export interface QuestionRaw {
   category: string,
   options: string[],
   correct: number,
-  ownership: string, // change this value later
-  // This will (or will not be) implemented later
+  ownership: string,
   done?: boolean,
   difficulty?: string,
   uuid: string
@@ -27,6 +26,6 @@ const questionSchema: mongoose.Schema<QuestionRaw> = new mongoose.Schema({
   done: Boolean,
   difficulty: String,
   uuid: String,
-})
+});
 
 export default mongoose.model('Question', questionSchema);
