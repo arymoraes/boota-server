@@ -11,7 +11,7 @@ dotenv.config({ path: resolve(__dirname, './.env') });
 const app = express();
 
 const corsConfig = {
-  origin: process.env.FRONTEND_URL,
+  origin: '*',
   credentials: true,
 };
 

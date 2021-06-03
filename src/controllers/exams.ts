@@ -144,7 +144,9 @@ export const generateAnExam = async (
     const updatedExam = await Exams.findByIdAndUpdate(
       { _id: examId },
       { submitted: true, hashedId },
+      { new: true }
     );
+    console.log(updatedExam);
     res.status(200);
     res.send(updatedExam);
   } catch (err) {
